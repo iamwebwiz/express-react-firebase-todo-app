@@ -2,7 +2,7 @@ const functions = require('firebase-functions')
 const app = require('express')()
 require('dotenv').config()
 
-const { fetchAllTodos } = require('./APIs/todos')
+const { fetchAllTodos, postNewTodo } = require('./APIs/todos')
 
 app.get('/', (request, response) =>
   response.json({
@@ -12,5 +12,7 @@ app.get('/', (request, response) =>
 )
 
 app.get('/todos', fetchAllTodos)
+
+app.post('/todos', postNewTodo)
 
 exports.api = functions.https.onRequest(app)
