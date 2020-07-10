@@ -65,3 +65,6 @@ node_modules/
 .env
 functions/package-lock.json
 package-lock.json
+
+# Service Account
+*-firebase-adminsdk-*
