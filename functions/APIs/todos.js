@@ -20,7 +20,7 @@ exports.fetchAllTodos = (request, response) => {
     })
     .catch(err => {
       console.error(err)
-      response.status(500).json({ error: err.code })
+      return response.status(500).json({ error: err.code })
     })
 }
 
@@ -53,8 +53,25 @@ exports.postNewTodo = (request, response) => {
     })
     .catch(err => {
       console.error(err)
-      response
+      return response
         .status(500)
         .json({ error: 'Something went wrong while adding todo' })
+    })
+}
+
+exports.deleteTodo = (request, response) => {
+  const todoId = request.params.id
+
+  db.collection('todos')
+    .doc(todoId)
+    .delete()
+    .then(() => {
+      return response.status(200).json({ message: 'Todo deleted successfully' })
+    })
+    .catch(err => {
+      console.error(`An error occured while deleting todo: ${err}`)
+      return response.status(500).json({
+        error: `An error occured while deleting todo: ${err}`,
+      })
     })
 }
