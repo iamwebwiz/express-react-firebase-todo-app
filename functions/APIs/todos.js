@@ -16,11 +16,36 @@ exports.fetchAllTodos = (request, response) => {
         })
       })
 
-      return response.json(todos)
+      return response.status(200).json(todos)
     })
     .catch(err => {
       console.error(err)
       return response.status(500).json({ error: err.code })
+    })
+}
+
+exports.fetchSingleTodo = (request, response) => {
+  const todoId = request.params.id
+
+  db.collection('todos')
+    .doc(todoId)
+    .get()
+    .then(document => {
+      let todo = {}
+
+      todo.id = document.id
+      todo.title = document.data().title
+      todo.body = document.data().body
+      todo.createdAt = document.data().createdAt
+
+      return response.status(200).json(todo)
+    })
+    .catch(err => {
+      console.error(err)
+
+      return response.status(500).json({
+        error: `Unable to fetch the todo item: ${err}`,
+      })
     })
 }
 
@@ -72,6 +97,29 @@ exports.deleteTodo = (request, response) => {
       console.error(`An error occured while deleting todo: ${err}`)
       return response.status(500).json({
         error: `An error occured while deleting todo: ${err}`,
+      })
+    })
+}
+
+exports.editTodo = (request, response) => {
+  if (request.body.todoId || request.body.createdAt) {
+    return response
+      .status(403)
+      .json({ message: 'You are not permitted to edit this item' })
+  }
+
+  let document = db.collection('todos').doc(request.params.id)
+
+  document
+    .update(request.body)
+    .then(() => {
+      return response.status(200).json({ message: 'Todo updated successfully' })
+    })
+    .catch(err => {
+      console.error(err)
+
+      return response.status(500).json({
+        error: `An error occured while updating todo: ${err}`,
       })
     })
 }
