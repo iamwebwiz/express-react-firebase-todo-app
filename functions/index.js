@@ -10,12 +10,16 @@ const {
   deleteTodo,
 } = require("./APIs/todos");
 
+const { login } = require("./APIs/users");
+
 app.get("/", (request, response) =>
   response.json({
     app_name: "Express React Firebase Todo App",
     app_version: "1.0.0",
   })
 );
+
+app.post("/login", login);
 
 app.get("/todos", fetchAllTodos);
 app.get("/todos/:id", fetchSingleTodo);
