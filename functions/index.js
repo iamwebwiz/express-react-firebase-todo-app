@@ -10,7 +10,7 @@ const {
   deleteTodo,
 } = require("./APIs/todos");
 
-const { login } = require("./APIs/users");
+const { login, signup } = require("./APIs/users");
 
 app.get("/", (request, response) =>
   response.json({
@@ -20,6 +20,7 @@ app.get("/", (request, response) =>
 );
 
 app.post("/login", login);
+app.post("/register", signup);
 
 app.get("/todos", fetchAllTodos);
 app.get("/todos/:id", fetchSingleTodo);
