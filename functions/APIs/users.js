@@ -101,3 +101,7 @@ exports.signup = (request, response) => {
       }
     });
 };
+
+exports.uploadProfilePhoto = (request, response) => {
+  //
+};
